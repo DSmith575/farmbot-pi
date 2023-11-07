@@ -2,17 +2,17 @@ from flask import Flask, render_template, Response, request, send_from_directory
 from camera import VideoCamera
 import os
 
-pi_camera = VideoCamera(flip=False) # flip pi camera if upside down.
+pi_camera = VideoCamera(flip=False)  # flip pi camera if upside down.
 
 # App Globals (do not edit)
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html') #you can customze index.html here
+    return render_template('index.html')  # you can customize index.html here
 
 def gen(camera):
-    #get camera frame
+    # get camera frame
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
@@ -23,12 +23,11 @@ def video_feed():
     return Response(gen(pi_camera),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# Take a photo when pressing camera button
+# Take a photo when pressing the camera button
 @app.route('/picture')
 def take_picture():
     pi_camera.take_picture()
     return "None"
 
-if __name__ == '__main__':
-
+if __name__ == '__main':
     app.run(host='0.0.0.0', debug=False)
